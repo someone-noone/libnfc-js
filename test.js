@@ -8,4 +8,10 @@ nfc.close();
 
 let nfcDevice = new NFCDevice();
 nfcDevice.open("pn532_uart:/dev/tty.usbserial");
-nfcDevice.close();
+
+
+nfcDevice.poll((err, result) => {
+    if (err)
+        throw err;
+    console.log(result);
+})

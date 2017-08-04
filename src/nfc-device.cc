@@ -1,10 +1,12 @@
 #include "nfc-device.h"
+#include "nfc-poll.h"
 
 using Nan::HandleScope;
-
+using Nan::Callback;
 using v8::Local;
 using v8::Array;
 using v8::String;
+using v8::Function;
 
 NAN_METHOD(NFCDevice::New) {
     HandleScope scope;
@@ -49,4 +51,12 @@ NAN_METHOD(NFCDevice::Open) {
 
     device->_opened = true;
     info.GetReturnValue().Set(info.This());
+}
+
+NAN_METHOD(NFCDevice::Poll) {
+    Nan::HandleScope scope;
+    NFCDevice* device = ObjectWrap::Unwrap<NFCDevice>(info.This());
+
+    Callback *callback = new Callback(info[0].As<Function>());
+    AsyncQueueWorker(new NFCPoll(callback, device->_pnd));
 }

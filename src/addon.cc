@@ -27,6 +27,7 @@ NAN_MODULE_INIT(InitAll) {
 
     SetPrototypeMethod(tpl2, "close", NFCDevice::Close);
     SetPrototypeMethod(tpl2, "open", NFCDevice::Open);
+    SetPrototypeMethod(tpl2, "poll", NFCDevice::Poll);
 
     Set(target, New("NFCDevice").ToLocalChecked(), tpl2->GetFunction());
 }

@@ -2,7 +2,7 @@
   "targets": [
     {
       "target_name": "nfc-binding",
-      "sources": [ "nfc.cc","nfc-device.cc", "addon.cc" ],
+      "sources": [ "src/nfc.cc","src/nfc-device.cc", "src/addon.cc" ],
       "libraries": [ "-lnfc", "-L/usr/local/lib/", "-L/usr/lib/" ],
       "include_dirs": [
         "<!(node -e \"require('nan')\")",

@@ -1,0 +1,27 @@
+{
+  "name": "libnfc-js",
+  "version": "0.0.1",
+  "description": "A simple libnfc API to interact with NFC tags.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/someone-noone/libnfc-js.git"
+  },
+  "keywords": [
+    "nfc",
+    "libnfc"
+  ],
+  "author": "Oleh Hordiichuk",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/someone-noone/libnfc-js/issues"
+  },
+  "homepage": "https://github.com/someone-noone/libnfc-js#readme",
+  "dependencies": {
+    "bindings": "^1.3.0",
+    "nan": "^2.6.2"
+  }
+}

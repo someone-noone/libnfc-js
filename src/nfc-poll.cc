@@ -1,4 +1,5 @@
 #include "nfc-poll.h"
+#include "tools.h"
 
 using v8::Function;
 using v8::Local;
@@ -36,13 +37,7 @@ void NFCPoll::Execute() {
 
     if ((res = nfc_initiator_poll_target(_pnd, nmModulations, szModulations, uiPollNr, uiPeriod, &_nt))  < 0) {
         _has_error = true;
-        _error.assign("nfc_initiator_poll_target() error");
-        return;
-    }
-
-    if (res <= 0) {
-        _has_error = true;
-        _error.assign("no target found");
+        _error.assign(GetLibNFCError(res));
         return;
     }
 }

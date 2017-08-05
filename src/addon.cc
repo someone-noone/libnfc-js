@@ -1,6 +1,6 @@
 #include <nan.h>
 #include "nfc.h"
-#include "nfc-device.h"
+#include "nfc-reader.h"
 
 using v8::FunctionTemplate;
 using v8::Handle;
@@ -21,17 +21,17 @@ NAN_MODULE_INIT(InitAll) {
 
     Set(target, New("NFC").ToLocalChecked(), tpl->GetFunction());
 
-    Local<FunctionTemplate> tpl2 = New<FunctionTemplate>(NFCDevice::New);
+    Local<FunctionTemplate> tpl2 = New<FunctionTemplate>(NFCReader::New);
     tpl2->SetClassName(Nan::New("NFCDevice").ToLocalChecked());
     tpl2->InstanceTemplate()->SetInternalFieldCount(1);
 
-    SetPrototypeMethod(tpl2, "close", NFCDevice::Close);
-    SetPrototypeMethod(tpl2, "open", NFCDevice::Open);
-    SetPrototypeMethod(tpl2, "poll", NFCDevice::Poll);
-    SetPrototypeMethod(tpl2, "release", NFCDevice::Release);
-    SetPrototypeMethod(tpl2, "transceive", NFCDevice::Transceive);
+    SetPrototypeMethod(tpl2, "close", NFCReader::Close);
+    SetPrototypeMethod(tpl2, "open", NFCReader::Open);
+    SetPrototypeMethod(tpl2, "poll", NFCReader::Poll);
+    SetPrototypeMethod(tpl2, "release", NFCReader::Release);
+    SetPrototypeMethod(tpl2, "transceive", NFCReader::Transceive);
 
-    Set(target, New("NFCDevice").ToLocalChecked(), tpl2->GetFunction());
+    Set(target, New("NFCReaderRaw").ToLocalChecked(), tpl2->GetFunction());
 }
 
 NODE_MODULE(addon, InitAll)

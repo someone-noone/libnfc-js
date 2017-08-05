@@ -4,7 +4,7 @@
 #include <nan.h>
 #include <nfc/nfc.h>
 
-class NFCDevice  : public Nan::ObjectWrap {
+class NFCReader  : public Nan::ObjectWrap {
     public:
         static NAN_METHOD(New);
         static NAN_METHOD(Open);

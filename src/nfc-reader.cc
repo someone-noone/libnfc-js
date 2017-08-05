@@ -1,4 +1,4 @@
-#include "nfc-device.h"
+#include "nfc-reader.h"
 #include "nfc-poll.h"
 #include "nfc-release.h"
 #include "nfc-transceive.h"
@@ -12,10 +12,10 @@ using v8::String;
 using v8::Function;
 using v8::Number;
 
-NAN_METHOD(NFCDevice::New) {
+NAN_METHOD(NFCReader::New) {
     HandleScope scope;
     assert(info.IsConstructCall());
-    NFCDevice* device = new NFCDevice();
+    NFCReader* device = new NFCReader();
     device->Wrap(info.This());
     device->_opened = false;
 
@@ -26,9 +26,9 @@ NAN_METHOD(NFCDevice::New) {
     info.GetReturnValue().Set(info.This());
 }
 
-NAN_METHOD(NFCDevice::Close) {
+NAN_METHOD(NFCReader::Close) {
     HandleScope scope;
-    NFCDevice* device = ObjectWrap::Unwrap<NFCDevice>(info.This());
+    NFCReader* device = ObjectWrap::Unwrap<NFCReader>(info.This());
 
     if (device->_opened)
         nfc_close(device->_pnd);
@@ -37,9 +37,9 @@ NAN_METHOD(NFCDevice::Close) {
     info.GetReturnValue().Set(info.This());
 }
 
-NAN_METHOD(NFCDevice::Open) {
+NAN_METHOD(NFCReader::Open) {
     HandleScope scope;
-    NFCDevice* device = ObjectWrap::Unwrap<NFCDevice>(info.This());
+    NFCReader* device = ObjectWrap::Unwrap<NFCReader>(info.This());
 
     if (info.Length() > 0) {
         nfc_connstring devicePath;
@@ -60,25 +60,25 @@ NAN_METHOD(NFCDevice::Open) {
     info.GetReturnValue().Set(info.This());
 }
 
-NAN_METHOD(NFCDevice::Poll) {
+NAN_METHOD(NFCReader::Poll) {
     HandleScope scope;
-    NFCDevice* device = ObjectWrap::Unwrap<NFCDevice>(info.This());
+    NFCReader* device = ObjectWrap::Unwrap<NFCReader>(info.This());
 
     Callback *callback = new Callback(info[0].As<Function>());
     AsyncQueueWorker(new NFCPoll(callback, device->_pnd));
 }
 
-NAN_METHOD(NFCDevice::Release) {
+NAN_METHOD(NFCReader::Release) {
     HandleScope scope;
-    NFCDevice* device = ObjectWrap::Unwrap<NFCDevice>(info.This());
+    NFCReader* device = ObjectWrap::Unwrap<NFCReader>(info.This());
 
     Callback *callback = new Callback(info[0].As<Function>());
     AsyncQueueWorker(new NFCRelease(callback, device->_pnd));
 }
 
-NAN_METHOD(NFCDevice::Transceive) {
+NAN_METHOD(NFCReader::Transceive) {
     HandleScope scope;
-    NFCDevice* device = ObjectWrap::Unwrap<NFCDevice>(info.This());
+    NFCReader* device = ObjectWrap::Unwrap<NFCReader>(info.This());
 
     uint8_t* data = (uint8_t *)node::Buffer::Data(info[0]);
     size_t size = node::Buffer::Length(info[0]);

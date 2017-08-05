@@ -1,35 +1,35 @@
 'use strict'
 
-const {NFC, NFCDevice} = require('./index')
+const {NFC, NFCReader} = require('./index')
 
+// Core API:
 let nfc = new NFC();
 console.log(nfc.listDevices())
 nfc.close();
 
-let nfcDevice = new NFCDevice();
-nfcDevice.open("pn532_uart:/dev/tty.usbserial");
+// Reader API:
+let nfcReader = new NFCReader();
+nfcReader.open("pn532_uart:/dev/tty.usbserial"); // or nfcReader.open(); to open the default device
 
-nfcDevice.poll((err, result) => {
-    if (err)
-        throw err;
-    console.log(result);
+nfcReader.poll(); // polls for the next card
+nfcReader.on('card', card => {
+    console.log(card);
 
+    async function process() {
+        // Sending data:
+        // let result = await nfcReader.transceive(Buffer.from([0]));
+        // console.log(result);
 
-    nfcDevice.transceive(Buffer.from([
-        0x00, // Class
-        0xa4, // INS
-        0x04, // P1
-        0x00, // P2
-        0x07 // Le
-    ]), (err, result) => {
-        if (err)
-            throw err;
-        console.log(result)
+        await nfcReader.release();
+        console.log('card released');
 
-        nfcDevice.release((err) => {
-            if (err)
-                throw err;
-            console.log("device released");
-        })
-    });
+        nfcReader.poll(); // polls for the next card
+    }
+
+    process();
+});
+
+// triggered if polling has failed
+nfcReader.on('error', err => {
+    throw err;
 })

@@ -24,7 +24,7 @@ See full example in test.js
 #### List avaliable devices in the system
 
 ```javascript
-const {NFC, NFCReader} = require('./index')
+const {NFC, NFCReader} = require('libnfc-js')
 
 // Core API:
 let nfc = new NFC();

@@ -10,9 +10,9 @@ A simple libnfc API to interact with NFC tags.
 
 * Linux or macOS system (Windows support is not yet implemented)
 * libnfc MUST be installed in the system:
- * macOS: brew install libnfc
- * linux(debian): apt-get install libnfc
- * this binding is looking for libnfc files in /usr/lib or /usr/local/lib
+  * macOS: brew install libnfc
+  * linux(debian): apt-get install libnfc
+  * this binding is looking for libnfc files in /usr/lib or /usr/local/lib
 * Your NFC device MUST be configured in nfc.conf file (location depends on your libnfc installation)
 
 Please ensure that you're able to communicate with your NFC device with nfc-list or nfc-poll commands, before you start using this package.

@@ -14,9 +14,22 @@ nfcDevice.poll((err, result) => {
         throw err;
     console.log(result);
 
-    nfcDevice.release((err) => {
+
+    nfcDevice.transceive(Buffer.from([
+        0x00, // Class
+        0xa4, // INS
+        0x04, // P1
+        0x00, // P2
+        0x07 // Le
+    ]), (err, result) => {
         if (err)
             throw err;
-        console.log("device released");
-    })
+        console.log(result)
+
+        nfcDevice.release((err) => {
+            if (err)
+                throw err;
+            console.log("device released");
+        })
+    });
 })

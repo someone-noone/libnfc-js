@@ -29,6 +29,7 @@ NAN_MODULE_INIT(InitAll) {
     SetPrototypeMethod(tpl2, "open", NFCDevice::Open);
     SetPrototypeMethod(tpl2, "poll", NFCDevice::Poll);
     SetPrototypeMethod(tpl2, "release", NFCDevice::Release);
+    SetPrototypeMethod(tpl2, "transceive", NFCDevice::Transceive);
 
     Set(target, New("NFCDevice").ToLocalChecked(), tpl2->GetFunction());
 }

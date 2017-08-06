@@ -35,7 +35,7 @@ void NFCPoll::Execute() {
     const size_t szModulations = 5;
     int res = 0;
 
-    if ((res = nfc_initiator_poll_target(_pnd, nmModulations, szModulations, uiPollNr, uiPeriod, &_nt))  < 0) {
+    if ((res = nfc_initiator_poll_target(_pnd, nmModulations, szModulations, uiPollNr, uiPeriod, &_nt))  <= 0) {
         _has_error = true;
         _error.assign(GetLibNFCError(res));
         return;

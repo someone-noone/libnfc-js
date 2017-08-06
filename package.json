@@ -1,6 +1,6 @@
 {
   "name": "libnfc-js",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "A simple libnfc API to interact with NFC tags.",
   "main": "index.js",
   "scripts": {

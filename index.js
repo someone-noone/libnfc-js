@@ -32,7 +32,7 @@ class NFCReader extends EventEmitter {
         return Promise.fromCallback(cb => this._nfc.poll(cb))
             .then(card => this.emit('card', card))
             .catch(e => {
-                if (e.message != "NFC_ECHIP")
+                if (e.message != "NFC_ECHIP" && e.message != "Unknown error")
                     this.emit('error', e)
                 else
                     return this.poll();

@@ -50,7 +50,7 @@ nfcReader.open("pn532_uart:/dev/tty.usbserial");
 
 ``` javascript
 nfcReader.poll(); // polls for the next card
-nfcReader.on('card', card => {
+nfcReader.on('card', async card => {
     // Sending data:
     let result = await nfcReader.transceive(Buffer.from([0]));
     console.log(result);

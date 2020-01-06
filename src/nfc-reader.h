@@ -12,6 +12,7 @@ class NFCReader  : public Nan::ObjectWrap {
         static NAN_METHOD(Poll);
         static NAN_METHOD(Release);
         static NAN_METHOD(Transceive);
+        static NAN_METHOD(SetProperty);
     private:
         nfc_context *_context;
         nfc_device *_pnd;

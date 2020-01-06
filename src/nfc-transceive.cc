@@ -15,6 +15,7 @@ using Nan::Null;
 using Nan::To;
 using Nan::Error;
 using Nan::NewBuffer;
+using Nan::CopyBuffer;
 
 using namespace std;
 
@@ -46,7 +47,7 @@ void NFCTransceive::HandleOKCallback() {
     if (_has_error)
         argv[0] = Error(_error.c_str());
     else
-        argv[1] = NewBuffer((char*)_recv_data, (uint32_t)_recv_size).ToLocalChecked();
+        argv[1] = CopyBuffer((char*)_recv_data, (uint32_t)_recv_size).ToLocalChecked();
 
     callback->Call(2, argv);
 }

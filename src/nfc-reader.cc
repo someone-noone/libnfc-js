@@ -94,3 +94,17 @@ NAN_METHOD(NFCReader::Transceive) {
     }
     AsyncQueueWorker(new NFCTransceive(callback, device->_pnd, data, size, timeout));
 }
+
+NAN_METHOD(NFCReader::SetProperty) {
+    Nan::HandleScope scope;
+    NFCReader* device = ObjectWrap::Unwrap<NFCReader>(info.This());
+
+    nfc_property property = (nfc_property)To<uint32_t>(info[0].As<Number>()).FromJust();
+    bool bEnable = To<bool>(info[1].As<v8::Boolean>()).FromJust();
+
+    if (nfc_device_set_property_bool(device->_pnd, property, bEnable) < 0) {
+        return Nan::ThrowError("nfc_device_set_property_bool() failed");
+    }
+
+    info.GetReturnValue().Set(info.This());
+}

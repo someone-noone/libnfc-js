@@ -81,20 +81,20 @@ const char *GetBaudRate(const nfc_target &nt) {
 }
 
 void NFCPoll::HandleOKCallback() {
-    HandleScope scope;
+    Nan::HandleScope scope;
 
-    Local<Value> argv[] = {
-        Null()
-      , Null()
+    v8::Local<v8::Value> argv[] = {
+        Nan::Null(), 
+        Nan::Null()
     };
 
-    if(_has_error)
-        argv[0] = Error(_error.c_str());
+    if (_has_error)
+        argv[0] = Nan::Error(_error.c_str());
     else {
-        Local<Object> obj = New<Object>();
+        v8::Local<v8::Object> obj = Nan::New<v8::Object>();
 
-        obj->Set(New("modulationType").ToLocalChecked(), New(GetModulationType(_nt)).ToLocalChecked());
-        obj->Set(New("baudRate").ToLocalChecked(), New(GetBaudRate(_nt)).ToLocalChecked());
+        Nan::Set(obj, Nan::New("modulationType").ToLocalChecked(), Nan::New(GetModulationType(_nt)).ToLocalChecked());
+        Nan::Set(obj, Nan::New("baudRate").ToLocalChecked(), Nan::New(GetBaudRate(_nt)).ToLocalChecked());
         argv[1] = obj;
     }
 

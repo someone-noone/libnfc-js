@@ -1,42 +1,33 @@
 'use strict'
 const EventEmitter = require('events');
 const binding = require('bindings')('nfc-binding');
-const Promise = require('bluebird');
+const { promisify } = require('util');
 
 class NFCReader extends EventEmitter {
     constructor() {
         super();
         this._nfc = new binding.NFCReaderRaw();
+        this.transceive = promisify(this._nfc.transceive).bind(this._nfc);
+        this.release = promisify(this._nfc.release).bind(this._nfc);
+        this.pollAsync = promisify(this._nfc.poll).bind(this._nfc);
+        this.close = this._nfc.close.bind(this._nfc);
+        this.open = this._nfc.open.bind(this._nfc);
     }
 
-    open() {
-        return this._nfc.open();
-    }
-
-    close() {
-        return this.close();
-    }
-
-    transceive(data, timeout) {
-        if (timeout)
-            return Promise.fromCallback(cb => this._nfc.transceive(data, timeout, cb));
-        else
-            return Promise.fromCallback(cb => this._nfc.transceive(data, cb));
-    }
-
-    release() {
-        return Promise.fromCallback(cb => this._nfc.release(cb));
-    }
-
-    poll() {
-        return Promise.fromCallback(cb => this._nfc.poll(cb))
-            .then(card => this.emit('card', card))
-            .catch(e => {
-                if (e.message != "NFC_ECHIP" && e.message != "Unknown error")
-                    this.emit('error', e)
-                else
-                    return this.poll();
-            });
+    async poll(onCard) {
+        let polling = true;
+    
+        while(polling) {
+            try {
+                const card = await this.pollAsync();
+                await onCard(card);
+            } catch (e) {
+                if (e.message !== "NFC_ECHIP" && e.message !== "Unknown error") {
+                    this.emit('error', e);
+                    polling = false;
+                }
+            }
+        }
     }
 }
 

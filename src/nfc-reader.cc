@@ -43,7 +43,7 @@ NAN_METHOD(NFCReader::Open) {
 
     if (info.Length() > 0) {
         nfc_connstring devicePath;
-        String::Utf8Value utfPath(info[0]->ToString());
+        Nan::Utf8String utfPath(Nan::To<String>(info[0]).ToLocalChecked());
         snprintf(devicePath, sizeof devicePath, "%s", *utfPath);
         device->_pnd = nfc_open(device->_context, devicePath);
     }

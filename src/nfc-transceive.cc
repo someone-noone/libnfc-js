@@ -38,15 +38,26 @@ void NFCTransceive::Execute() {
 void NFCTransceive::HandleOKCallback() {
     HandleScope scope;
 
-    Local<Value> argv[] = {
-        Null(),
-        Null()
+    v8::Local<v8::Value> argv[] = {
+        Nan::Null(), 
+        Nan::Null()
     };
 
-    if (_has_error)
+    if (!_has_error) {
+        // Allocate a new buffer for JavaScript
+        char* bufferCopy = new char[_recv_size];
+        memcpy(bufferCopy, _recv_data, _recv_size);
+
+        // Create a Node.js buffer from the copied data
+        v8::Local<v8::Object> nodeBuffer = Nan::CopyBuffer(bufferCopy, _recv_size).ToLocalChecked();
+
+        // Free the temporary buffer copy now that it's been copied into the Node.js buffer
+        delete[] bufferCopy;
+
+        argv[1] = nodeBuffer;
+    } else {
         argv[0] = Error(_error.c_str());
-    else
-        argv[1] = NewBuffer((char*)_recv_data, (uint32_t)_recv_size).ToLocalChecked();
+    }
 
     callback->Call(2, argv);
 }

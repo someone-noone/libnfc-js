@@ -30,8 +30,8 @@ void NFCRelease::Execute() {
 void NFCRelease::HandleOKCallback() {
     HandleScope scope;
 
-    Local<Value> argv[] = {
-        Null()
+    v8::Local<v8::Value> argv[] = {
+        Nan::Null(), 
     };
 
     callback->Call(1, argv);
